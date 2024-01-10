@@ -1,2 +1,2 @@
 # drawing-reference-saver
-A repository of my personal project using Spring Boot
+A RESTful CRUD API for drawing references using Spring Boot and PostgreSQL
