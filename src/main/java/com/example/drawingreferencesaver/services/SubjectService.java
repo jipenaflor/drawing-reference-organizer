@@ -3,12 +3,12 @@ package com.example.drawingreferencesaver.services;
 import com.example.drawingreferencesaver.models.Reference;
 import com.example.drawingreferencesaver.repositories.ReferenceRepository;
 import com.example.drawingreferencesaver.repositories.SubjectRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.drawingreferencesaver.models.Subject;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SubjectService {
@@ -22,12 +22,16 @@ public class SubjectService {
         return subjectRepository.findAll();
     }
 
-    public Subject getSubject(Long id) {
-        return this.subjectRepository.getReferenceById(id);
+    public Optional<Subject> getSubjectById(long id) {
+        return this.subjectRepository.findById(id);
     }
 
-    public void addSubject(Subject subject) {
-        subjectRepository.save(subject);
+    public List<Subject> getSubjectByTitle(String title) {
+        return this.subjectRepository.findSubjectsByTitle(title);
+    }
+
+    public Subject addSubject(Subject subject) {
+        return subjectRepository.save(subject);
     }
 
     public void addReferenceToSubject(Long subjectId, Long referenceId) {

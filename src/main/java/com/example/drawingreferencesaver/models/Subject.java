@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import com.example.drawingreferencesaver.models.Reference;
 
@@ -15,9 +14,14 @@ import java.util.ArrayList;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subject extends AbstractPersistable<Long> {
+public class Subject {
 
-    private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column(nullable = false, unique = true)
+    private String title;
 
     @ManyToMany
     private List<Reference> references;

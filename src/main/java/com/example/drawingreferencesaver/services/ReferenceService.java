@@ -16,11 +16,11 @@ public class ReferenceService {
         return referenceRepository.findAll();
     }
 
-    public Reference getReference(Long id) {
+    public Reference getReference(long id) {
         return referenceRepository.getReferenceById(id);
     }
 
-    public void addReference(Reference reference) {
-        referenceRepository.save(reference);
+    public Reference addReference(Reference reference) {
+        return referenceRepository.save(reference);
     }
 }

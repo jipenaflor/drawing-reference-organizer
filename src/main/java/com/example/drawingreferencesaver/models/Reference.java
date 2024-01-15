@@ -1,6 +1,6 @@
 package com.example.drawingreferencesaver.models;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,8 +10,16 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reference extends AbstractPersistable<Long> {
+public class Reference {
 
-    private String link;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column
+    private String description;
+
+    @Column(nullable = false)
+    private String url;
 
 }
