@@ -1,5 +1,6 @@
 package com.example.drawingreferencesaver.controllers;
 
+import com.example.drawingreferencesaver.models.Reference;
 import com.example.drawingreferencesaver.models.Subject;
 import com.example.drawingreferencesaver.services.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,20 @@ public class SubjectController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addReferenceToSubject(@PathVariable long subjectId, @PathVariable long referenceId) {
         subjectService.addReferenceToSubject(subjectId, referenceId);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteSubject(@PathVariable long id) {
+        subjectService.deleteSubject(id);
+    }
+
+    @DeleteMapping("/{subjectId}/references/{referenceId}")
+    public void deleteReferenceFromSubject(@PathVariable long subjectId, @PathVariable long referenceId) {
+        subjectService.deleteReferenceFromSubject(subjectId, referenceId);
+    }
+
+    @PutMapping("/{id}")
+    public Subject updateSubject(@RequestBody Subject subject, @PathVariable long id) {
+        return subjectService.updateSubject(subject, id);
     }
 }

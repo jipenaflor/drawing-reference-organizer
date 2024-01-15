@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReferenceService {
@@ -16,11 +17,23 @@ public class ReferenceService {
         return referenceRepository.findAll();
     }
 
-    public Reference getReference(long id) {
-        return referenceRepository.getReferenceById(id);
+    public Optional<Reference> getReferenceById(long id) {
+        return this.referenceRepository.findById(id);
     }
 
     public Reference addReference(Reference reference) {
+        return this.referenceRepository.save(reference);
+    }
+
+    public void deleteReference(long id) {
+        this.referenceRepository.deleteById(id);
+    }
+
+    public Reference updateReference(Reference updatedReference, long id) {
+        Reference reference = referenceRepository.getReferenceById(id);
+        reference.setDescription(updatedReference.getDescription());
+        reference.setUrl(updatedReference.getUrl());
         return referenceRepository.save(reference);
     }
+
 }

@@ -31,13 +31,30 @@ public class SubjectService {
     }
 
     public Subject addSubject(Subject subject) {
-        return subjectRepository.save(subject);
+        return this.subjectRepository.save(subject);
     }
 
-    public void addReferenceToSubject(Long subjectId, Long referenceId) {
+    public void addReferenceToSubject(long subjectId, long referenceId) {
         Subject subject = subjectRepository.getReferenceById(subjectId);
         Reference reference = referenceRepository.getReferenceById(referenceId);
         subject.getReferences().add(reference);
         subjectRepository.save(subject);
+    }
+
+    public void deleteSubject(long id) {
+        this.subjectRepository.deleteById(id);
+    }
+
+    public void deleteReferenceFromSubject(long subjectId, long referenceId) {
+        Subject subject = subjectRepository.getReferenceById(subjectId);
+        Reference reference = referenceRepository.getReferenceById(referenceId);
+        subject.getReferences().remove(reference);
+        subjectRepository.save(subject);
+    }
+
+    public Subject updateSubject(Subject updatedSubject, long id) {
+        Subject subject = subjectRepository.getReferenceById(id);
+        subject.setTitle(updatedSubject.getTitle());
+        return subjectRepository.save(subject);
     }
 }
