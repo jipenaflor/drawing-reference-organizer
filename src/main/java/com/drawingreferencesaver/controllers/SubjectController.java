@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,28 +34,37 @@ public class SubjectController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Subject addSubject(@RequestBody Subject subject) {
-        return subjectService.addSubject(subject);
+    public Subject addSubject(@RequestBody Subject subject, Principal principal) {
+        return subjectService.addSubject(subject, principal);
     }
 
     @PostMapping("/{subjectId}/references/{referenceId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addReferenceToSubject(@PathVariable long subjectId, @PathVariable long referenceId) {
-        subjectService.addReferenceToSubject(subjectId, referenceId);
+    public void addReferenceToSubject(
+            @PathVariable long subjectId,
+            @PathVariable long referenceId,
+            Principal principal) {
+        subjectService.addReferenceToSubject(subjectId, referenceId, principal);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteSubject(@PathVariable long id) {
-        subjectService.deleteSubject(id);
+    public void deleteSubject(@PathVariable long id, Principal principal) {
+        subjectService.deleteSubject(id, principal);
     }
 
     @DeleteMapping("/{subjectId}/references/{referenceId}")
-    public void deleteReferenceFromSubject(@PathVariable long subjectId, @PathVariable long referenceId) {
-        subjectService.deleteReferenceFromSubject(subjectId, referenceId);
+    public void deleteReferenceFromSubject(
+            @PathVariable long subjectId,
+            @PathVariable long referenceId,
+            Principal principal) {
+        subjectService.deleteReferenceFromSubject(subjectId, referenceId, principal);
     }
 
     @PutMapping("/{id}")
-    public Subject updateSubject(@RequestBody Subject subject, @PathVariable long id) {
-        return subjectService.updateSubject(subject, id);
+    public void updateSubject(
+            @RequestBody Subject subject,
+            @PathVariable long id,
+            Principal principal) {
+        subjectService.updateSubject(subject, id, principal);
     }
 }

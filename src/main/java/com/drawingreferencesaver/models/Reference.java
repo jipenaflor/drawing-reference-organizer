@@ -26,8 +26,12 @@ public class Reference {
     @Column(name = "url", nullable = false)
     private String url;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

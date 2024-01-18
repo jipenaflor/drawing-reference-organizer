@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,17 +29,20 @@ public class ReferenceController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Reference addReference(@RequestBody Reference reference) {
-        return referenceService.addReference(reference);
+    public Reference addReference(@RequestBody Reference reference, Principal principal) {
+        return referenceService.addReference(reference, principal);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteReference(@PathVariable long id) {
-        referenceService.deleteReference(id);
+    public void deleteReference(@PathVariable long id, Principal principal) {
+        referenceService.deleteReference(id, principal);
     }
 
     @PutMapping("/{id}")
-    public Reference updateReference(@RequestBody Reference reference, @PathVariable long id) {
-        return referenceService.updateReference(reference, id);
+    public void updateReference(
+            @RequestBody Reference reference,
+            @PathVariable long id,
+            Principal principal) {
+        referenceService.updateReference(reference, id, principal);
     }
 }
