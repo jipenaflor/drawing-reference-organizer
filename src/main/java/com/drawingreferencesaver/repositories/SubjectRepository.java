@@ -1,11 +1,12 @@
-package com.example.drawingreferencesaver.repositories;
+package com.drawingreferencesaver.repositories;
 
-import com.example.drawingreferencesaver.models.Subject;
+import com.drawingreferencesaver.models.Subject;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
     List<Subject> findSubjectsByTitle(String title);
 }

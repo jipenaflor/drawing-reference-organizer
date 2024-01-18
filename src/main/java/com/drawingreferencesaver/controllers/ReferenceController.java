@@ -1,8 +1,8 @@
-package com.example.drawingreferencesaver.controllers;
+package com.drawingreferencesaver.controllers;
 
-import com.example.drawingreferencesaver.models.Reference;
-import com.example.drawingreferencesaver.services.ReferenceService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.drawingreferencesaver.services.ReferenceService;
+import com.drawingreferencesaver.models.Reference;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +11,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/references")
+@RequiredArgsConstructor
 public class ReferenceController {
 
-    @Autowired
-    private ReferenceService referenceService;
+    private final ReferenceService referenceService;
 
     @GetMapping
     public List<Reference> getReferences() {

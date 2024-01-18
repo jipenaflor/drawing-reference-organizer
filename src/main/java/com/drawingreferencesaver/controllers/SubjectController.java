@@ -1,9 +1,8 @@
-package com.example.drawingreferencesaver.controllers;
+package com.drawingreferencesaver.controllers;
 
-import com.example.drawingreferencesaver.models.Reference;
-import com.example.drawingreferencesaver.models.Subject;
-import com.example.drawingreferencesaver.services.SubjectService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.drawingreferencesaver.models.Subject;
+import com.drawingreferencesaver.services.SubjectService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +11,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/subjects")
+@RequiredArgsConstructor
 public class SubjectController {
-    @Autowired
-    private SubjectService subjectService;
+
+    private final SubjectService subjectService;
 
     @GetMapping
     public List<Subject> getAllSubjects() {

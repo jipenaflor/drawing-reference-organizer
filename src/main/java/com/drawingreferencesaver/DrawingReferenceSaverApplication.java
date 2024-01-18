@@ -1,4 +1,4 @@
-package com.example.drawingreferencesaver;
+package com.drawingreferencesaver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
