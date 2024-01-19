@@ -1,9 +1,9 @@
-package com.drawingreferencesaver.services;
+package com.drawingreferenceorganizer.services;
 
-import com.drawingreferencesaver.models.User;
-import com.drawingreferencesaver.repositories.ReferenceRepository;
-import com.drawingreferencesaver.models.Reference;
-import com.drawingreferencesaver.repositories.UserRepository;
+import com.drawingreferenceorganizer.models.User;
+import com.drawingreferenceorganizer.repositories.ReferenceRepository;
+import com.drawingreferenceorganizer.models.Reference;
+import com.drawingreferenceorganizer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

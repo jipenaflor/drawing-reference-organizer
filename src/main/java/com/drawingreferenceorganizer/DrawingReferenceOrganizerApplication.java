@@ -1,13 +1,13 @@
-package com.drawingreferencesaver;
+package com.drawingreferenceorganizer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DrawingReferenceSaverApplication {
+public class DrawingReferenceOrganizerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DrawingReferenceSaverApplication.class, args);
+		SpringApplication.run(DrawingReferenceOrganizerApplication.class, args);
 	}
 
 }

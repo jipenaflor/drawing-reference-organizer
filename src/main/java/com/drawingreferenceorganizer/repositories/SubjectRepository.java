@@ -1,6 +1,6 @@
-package com.drawingreferencesaver.repositories;
+package com.drawingreferenceorganizer.repositories;
 
-import com.drawingreferencesaver.models.Subject;
+import com.drawingreferenceorganizer.models.Subject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

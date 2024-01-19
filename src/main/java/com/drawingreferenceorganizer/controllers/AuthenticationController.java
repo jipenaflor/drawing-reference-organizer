@@ -1,9 +1,9 @@
-package com.drawingreferencesaver.controllers;
+package com.drawingreferenceorganizer.controllers;
 
-import com.drawingreferencesaver.models.AuthenticationRequest;
-import com.drawingreferencesaver.models.AuthenticationResponse;
-import com.drawingreferencesaver.models.RegisterRequest;
-import com.drawingreferencesaver.services.AuthenticationService;
+import com.drawingreferenceorganizer.models.AuthenticationRequest;
+import com.drawingreferenceorganizer.models.AuthenticationResponse;
+import com.drawingreferenceorganizer.models.RegisterRequest;
+import com.drawingreferenceorganizer.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

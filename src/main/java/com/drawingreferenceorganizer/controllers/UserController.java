@@ -1,7 +1,7 @@
-package com.drawingreferencesaver.controllers;
+package com.drawingreferenceorganizer.controllers;
 
-import com.drawingreferencesaver.models.User;
-import com.drawingreferencesaver.services.UserService;
+import com.drawingreferenceorganizer.models.User;
+import com.drawingreferenceorganizer.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

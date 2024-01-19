@@ -1,4 +1,4 @@
-package com.drawingreferencesaver.config;
+package com.drawingreferenceorganizer.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

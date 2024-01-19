@@ -1,4 +1,4 @@
-package com.drawingreferencesaver.models;
+package com.drawingreferenceorganizer.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

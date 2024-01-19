@@ -1,11 +1,10 @@
-package com.drawingreferencesaver.models;
+package com.drawingreferenceorganizer.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import java.util.List;
 
@@ -13,25 +12,22 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "drawing_references")
-public class Reference {
+@Table(name = "subjects")
+public class Subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "title", nullable = false)
+    private String title;
 
-    @Column(name = "url", nullable = false)
-    private String url;
+    @ManyToMany
+    private List<Reference> references;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

@@ -1,4 +1,4 @@
-package com.drawingreferencesaver;
+package com.drawingreferenceorganizer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

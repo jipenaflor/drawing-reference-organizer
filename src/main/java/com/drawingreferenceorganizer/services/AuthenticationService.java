@@ -1,8 +1,8 @@
-package com.drawingreferencesaver.services;
+package com.drawingreferenceorganizer.services;
 
-import com.drawingreferencesaver.config.JwtService;
-import com.drawingreferencesaver.models.*;
-import com.drawingreferencesaver.repositories.UserRepository;
+import com.drawingreferenceorganizer.config.JwtService;
+import com.drawingreferenceorganizer.models.*;
+import com.drawingreferenceorganizer.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

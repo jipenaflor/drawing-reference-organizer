@@ -1,4 +1,4 @@
-# Drawing Reference Saver
+# Drawing Reference Organizer
 As an artist, I am not always capable of coming up with my original ideas 
 for my artworks. Most of the time, I need a lot of references, may it be a 
 photograph, a screenshot, or an artwork from another artist, to create my 

@@ -1,4 +1,4 @@
-package com.drawingreferencesaver.config;
+package com.drawingreferenceorganizer.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

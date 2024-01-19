@@ -1,4 +1,4 @@
-package com.drawingreferencesaver.models;
+package com.drawingreferenceorganizer.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

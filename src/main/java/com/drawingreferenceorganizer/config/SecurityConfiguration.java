@@ -1,4 +1,4 @@
-package com.drawingreferencesaver.config;
+package com.drawingreferenceorganizer.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

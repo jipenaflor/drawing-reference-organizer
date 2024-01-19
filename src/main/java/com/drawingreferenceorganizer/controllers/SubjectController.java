@@ -1,7 +1,7 @@
-package com.drawingreferencesaver.controllers;
+package com.drawingreferenceorganizer.controllers;
 
-import com.drawingreferencesaver.models.Subject;
-import com.drawingreferencesaver.services.SubjectService;
+import com.drawingreferenceorganizer.models.Subject;
+import com.drawingreferenceorganizer.services.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

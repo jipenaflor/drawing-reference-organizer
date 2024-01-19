@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>drawing-reference-saver</artifactId>
+	<artifactId>drawing-reference-organizer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>drawing-reference-saver</name>
 	<description>Personal project for Spring Boot</description>
