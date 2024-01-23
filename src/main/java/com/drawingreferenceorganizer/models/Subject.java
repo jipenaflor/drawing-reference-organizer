@@ -2,10 +2,9 @@ package com.drawingreferenceorganizer.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,8 +21,8 @@ public class Subject {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @ManyToMany
-    private List<Reference> references;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Reference> references = new ArrayList<>();
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)

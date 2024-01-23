@@ -4,6 +4,7 @@ import com.drawingreferenceorganizer.services.ReferenceService;
 import com.drawingreferenceorganizer.models.Reference;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -18,31 +19,33 @@ public class ReferenceController {
     private final ReferenceService referenceService;
 
     @GetMapping
-    public List<Reference> getReferences() {
+    public ResponseEntity<List<Reference>> getReferences() {
         return referenceService.list();
     }
 
     @GetMapping("/{id}")
-    public Optional<Reference> findById(@PathVariable long id) {
+    public ResponseEntity<?> findById(@PathVariable long id) {
         return referenceService.getReferenceById(id);
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Reference addReference(@RequestBody Reference reference, Principal principal) {
+    public ResponseEntity<Reference> addReference(
+            @RequestBody Reference reference,
+            Principal principal
+    ) {
         return referenceService.addReference(reference, principal);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteReference(@PathVariable long id, Principal principal) {
-        referenceService.deleteReference(id, principal);
+    public ResponseEntity<?> deleteReference(@PathVariable long id, Principal principal) {
+        return referenceService.deleteReference(id, principal);
     }
 
     @PutMapping("/{id}")
-    public void updateReference(
+    public ResponseEntity<?> updateReference(
             @RequestBody Reference reference,
             @PathVariable long id,
             Principal principal) {
-        referenceService.updateReference(reference, id, principal);
+        return referenceService.updateReference(reference, id, principal);
     }
 }

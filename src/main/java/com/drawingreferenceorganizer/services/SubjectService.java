@@ -6,7 +6,9 @@ import com.drawingreferenceorganizer.repositories.ReferenceRepository;
 import com.drawingreferenceorganizer.models.Reference;
 import com.drawingreferenceorganizer.repositories.SubjectRepository;
 import com.drawingreferenceorganizer.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -14,70 +16,99 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class SubjectService {
-    @Autowired
-    private SubjectRepository subjectRepository;
 
-    @Autowired
-    private ReferenceRepository referenceRepository;
+    private final SubjectRepository subjectRepository;
+    private final ReferenceRepository referenceRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    public List<Subject> list() {
-        return subjectRepository.findAll();
+    public ResponseEntity<List<Subject>> list() {
+        return new ResponseEntity<>(subjectRepository.findAll(), HttpStatus.OK);
     }
 
-    public Optional<Subject> getSubjectById(long id) {
-        return this.subjectRepository.findById(id);
+    public ResponseEntity<?> getSubjectById(long id) {
+        Optional<Subject> subject = subjectRepository.findById(id);
+        if (subject.isPresent()) {
+            return new ResponseEntity<>(subject.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Invalid subject id", HttpStatus.BAD_REQUEST);
     }
 
-    public List<Subject> getSubjectByTitle(String title) {
-        return this.subjectRepository.findSubjectsByTitle(title);
+    public ResponseEntity<List<Subject>> getSubjectByTitle(String title) {
+        return new ResponseEntity<>(subjectRepository.findSubjectsByTitle(title), HttpStatus.OK);
     }
 
-    public Subject addSubject(Subject subject, Principal principal) {
+    public ResponseEntity<Subject> addSubject(Subject subject, Principal principal) {
         User user = userRepository.findUsersByEmail(principal.getName());
         subject.setUser(user);
-        return this.subjectRepository.save(subject);
+        return new ResponseEntity<>(subjectRepository.save(subject), HttpStatus.CREATED);
     }
 
-    public void addReferenceToSubject(long subjectId, long referenceId, Principal principal) {
+    public ResponseEntity<?> addReferenceToSubject(long subjectId, long referenceId, Principal principal) {
         User user = userRepository.findUsersByEmail(principal.getName());
-        Subject subject = subjectRepository.getReferenceById(subjectId);
-        Reference reference = referenceRepository.getReferenceById(referenceId);
-        if (subject.getUser().getId() == user.getId() &&
-                reference.getUser().getId() == user.getId()) {
-            subject.getReferences().add(reference);
-            subjectRepository.save(subject);
+        Optional<Subject> subject = subjectRepository.findById(subjectId);
+        Optional<Reference> reference = referenceRepository.findById(referenceId);
+        if (subject.isPresent() && reference.isPresent()
+                && subject.get().getUser().getId() == user.getId()
+                && reference.get().getId() == user.getId()) {
+            subject.get().getReferences().add(reference.get());
+            return new ResponseEntity<>(
+                    subjectRepository.save(subject.get()),
+                    HttpStatus.ACCEPTED
+            );
         }
+        return new ResponseEntity<>(
+                "Invalid subject or reference id",
+                HttpStatus.UNAUTHORIZED
+        );
     }
 
-    public void deleteSubject(long id, Principal principal) {
+    public ResponseEntity<?> deleteSubject(long id, Principal principal) {
         User user = userRepository.findUsersByEmail(principal.getName());
         Subject subject = subjectRepository.getReferenceById(id);
         if (subject.getUser().getId() == user.getId()) {
-            this.subjectRepository.deleteById(id);
+            subjectRepository.deleteById(id);
+            return new ResponseEntity<>(
+                    "Subject is successfully deleted",
+                    HttpStatus.ACCEPTED
+            );
         }
+        return new ResponseEntity<>(
+                "Invalid subject or reference id",
+                HttpStatus.UNAUTHORIZED
+        );
     }
 
-    public void deleteReferenceFromSubject(long subjectId, long referenceId, Principal principal) {
+    public ResponseEntity<?> deleteReferenceFromSubject(long subjectId, long referenceId, Principal principal) {
         User user = userRepository.findUsersByEmail(principal.getName());
-        Subject subject = subjectRepository.getReferenceById(subjectId);
-        Reference reference = referenceRepository.getReferenceById(referenceId);
-        if (subject.getUser().getId() == user.getId() &&
-                reference.getUser().getId() == user.getId()) {
-            subject.getReferences().remove(reference);
-            subjectRepository.save(subject);
+        Optional<Subject> subject = subjectRepository.findById(subjectId);
+        Optional<Reference> reference = referenceRepository.findById(referenceId);
+        if (subject.isPresent() && reference.isPresent()
+                && subject.get().getUser().getId() == user.getId()
+                && reference.get().getId() == user.getId()) {
+            subject.get().getReferences().remove(reference.get());
+            return new ResponseEntity<>(
+                    subjectRepository.save(subject.get()),
+                    HttpStatus.ACCEPTED
+            );
         }
+        return new ResponseEntity<>(
+                "Invalid subject or reference id",
+                HttpStatus.UNAUTHORIZED
+        );
     }
 
-    public void updateSubject(Subject updatedSubject, long id, Principal principal) {
+    public ResponseEntity<?> updateSubject(Subject updatedSubject, long id, Principal principal) {
         User user = userRepository.findUsersByEmail(principal.getName());
         Subject subject = subjectRepository.getReferenceById(id);
         if (subject.getUser().getId() == user.getId()) {
             subject.setTitle(updatedSubject.getTitle());
-            subjectRepository.save(subject);
+            return new ResponseEntity<>(subjectRepository.save(subject), HttpStatus.ACCEPTED);
         }
+        return new ResponseEntity<>(
+                "Invalid subject id",
+                HttpStatus.UNAUTHORIZED
+        );
     }
 }

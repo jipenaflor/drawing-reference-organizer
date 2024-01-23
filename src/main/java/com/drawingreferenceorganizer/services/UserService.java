@@ -2,23 +2,30 @@ package com.drawingreferenceorganizer.services;
 
 import com.drawingreferenceorganizer.models.User;
 import com.drawingreferenceorganizer.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public List<User> list() {
-        return userRepository.findAll();
+    public ResponseEntity<List<User>> list() {
+        return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }
 
-    public Optional<User> getUserById(long id) {
-        return this.userRepository.findById(id);
+    public ResponseEntity<?> getUserById(long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
     }
 }

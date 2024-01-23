@@ -4,6 +4,7 @@ import com.drawingreferenceorganizer.models.Subject;
 import com.drawingreferenceorganizer.services.SubjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -18,53 +19,52 @@ public class SubjectController {
     private final SubjectService subjectService;
 
     @GetMapping
-    public List<Subject> getAllSubjects() {
+    public ResponseEntity<List<Subject>> getAllSubjects() {
         return subjectService.list();
     }
 
     @GetMapping("/{id}")
-    public Optional<Subject> findById(@PathVariable long id) {
+    public ResponseEntity<?> findById(@PathVariable long id) {
         return subjectService.getSubjectById(id);
     }
 
     @GetMapping("title/{referenceTitle}")
-    public List<Subject> findByTitle(@PathVariable String referenceTitle) {
+    public ResponseEntity<List<Subject>> findByTitle(@PathVariable String referenceTitle) {
         return subjectService.getSubjectByTitle(referenceTitle);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Subject addSubject(@RequestBody Subject subject, Principal principal) {
+    public ResponseEntity<Subject> addSubject(@RequestBody Subject subject, Principal principal) {
         return subjectService.addSubject(subject, principal);
     }
 
     @PostMapping("/{subjectId}/references/{referenceId}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void addReferenceToSubject(
+    public ResponseEntity<?> addReferenceToSubject(
             @PathVariable long subjectId,
             @PathVariable long referenceId,
             Principal principal) {
-        subjectService.addReferenceToSubject(subjectId, referenceId, principal);
+        return subjectService.addReferenceToSubject(subjectId, referenceId, principal);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteSubject(@PathVariable long id, Principal principal) {
-        subjectService.deleteSubject(id, principal);
+    public ResponseEntity<?> deleteSubject(@PathVariable long id, Principal principal) {
+        return subjectService.deleteSubject(id, principal);
     }
 
     @DeleteMapping("/{subjectId}/references/{referenceId}")
-    public void deleteReferenceFromSubject(
+    public ResponseEntity<?> deleteReferenceFromSubject(
             @PathVariable long subjectId,
             @PathVariable long referenceId,
             Principal principal) {
-        subjectService.deleteReferenceFromSubject(subjectId, referenceId, principal);
+        return subjectService.deleteReferenceFromSubject(subjectId, referenceId, principal);
     }
 
     @PutMapping("/{id}")
-    public void updateSubject(
+    public ResponseEntity<?> updateSubject(
             @RequestBody Subject subject,
             @PathVariable long id,
             Principal principal) {
-        subjectService.updateSubject(subject, id, principal);
+        return subjectService.updateSubject(subject, id, principal);
     }
 }
