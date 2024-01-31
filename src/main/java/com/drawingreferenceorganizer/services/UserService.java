@@ -1,5 +1,6 @@
 package com.drawingreferenceorganizer.services;
 
+import com.drawingreferenceorganizer.exceptions.UserNotFoundException;
 import com.drawingreferenceorganizer.models.User;
 import com.drawingreferenceorganizer.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,6 @@ public class UserService {
         if (user.isPresent()) {
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>("User does not exist", HttpStatus.BAD_REQUEST);
+        throw new UserNotFoundException();
     }
 }

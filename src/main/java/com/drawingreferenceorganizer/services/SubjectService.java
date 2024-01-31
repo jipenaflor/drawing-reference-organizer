@@ -1,5 +1,8 @@
 package com.drawingreferenceorganizer.services;
 
+import com.drawingreferenceorganizer.exceptions.ReferenceNotFoundException;
+import com.drawingreferenceorganizer.exceptions.SubjectNotFoundException;
+import com.drawingreferenceorganizer.exceptions.UserIdMismatchException;
 import com.drawingreferenceorganizer.models.Subject;
 import com.drawingreferenceorganizer.models.User;
 import com.drawingreferenceorganizer.repositories.ReferenceRepository;
@@ -32,11 +35,12 @@ public class SubjectService {
         if (subject.isPresent()) {
             return new ResponseEntity<>(subject.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>("Invalid subject id", HttpStatus.BAD_REQUEST);
+        throw new SubjectNotFoundException();
     }
 
     public ResponseEntity<List<Subject>> getSubjectByTitle(String title) {
-        return new ResponseEntity<>(subjectRepository.findSubjectsByTitle(title), HttpStatus.OK);
+        List<Subject> subjects = subjectRepository.findSubjectsByTitle(title);
+        return new ResponseEntity<>(subjects, HttpStatus.OK);
     }
 
     public ResponseEntity<Subject> addSubject(Subject subject, Principal principal) {
@@ -49,8 +53,13 @@ public class SubjectService {
         User user = userRepository.findUsersByEmail(principal.getName());
         Optional<Subject> subject = subjectRepository.findById(subjectId);
         Optional<Reference> reference = referenceRepository.findById(referenceId);
-        if (subject.isPresent() && reference.isPresent()
-                && subject.get().getUser().getId() == user.getId()
+        if (subject.isEmpty()) {
+            throw new SubjectNotFoundException();
+        }
+        if (reference.isEmpty()) {
+            throw new ReferenceNotFoundException();
+        }
+        if (subject.get().getUser().getId() == user.getId()
                 && reference.get().getId() == user.getId()) {
             subject.get().getReferences().add(reference.get());
             return new ResponseEntity<>(
@@ -58,34 +67,36 @@ public class SubjectService {
                     HttpStatus.ACCEPTED
             );
         }
-        return new ResponseEntity<>(
-                "Invalid subject or reference id",
-                HttpStatus.UNAUTHORIZED
-        );
+        throw new UserIdMismatchException();
     }
 
     public ResponseEntity<?> deleteSubject(long id, Principal principal) {
         User user = userRepository.findUsersByEmail(principal.getName());
-        Subject subject = subjectRepository.getReferenceById(id);
-        if (subject.getUser().getId() == user.getId()) {
+        Optional<Subject> subject = subjectRepository.findById(id);
+        if (subject.isEmpty()) {
+            throw new SubjectNotFoundException();
+        }
+        if (subject.get().getUser().getId() == user.getId()) {
             subjectRepository.deleteById(id);
             return new ResponseEntity<>(
                     "Subject is successfully deleted",
                     HttpStatus.ACCEPTED
             );
         }
-        return new ResponseEntity<>(
-                "Invalid subject or reference id",
-                HttpStatus.UNAUTHORIZED
-        );
+        throw new UserIdMismatchException();
     }
 
     public ResponseEntity<?> deleteReferenceFromSubject(long subjectId, long referenceId, Principal principal) {
         User user = userRepository.findUsersByEmail(principal.getName());
         Optional<Subject> subject = subjectRepository.findById(subjectId);
         Optional<Reference> reference = referenceRepository.findById(referenceId);
-        if (subject.isPresent() && reference.isPresent()
-                && subject.get().getUser().getId() == user.getId()
+        if (subject.isEmpty()) {
+            throw new SubjectNotFoundException();
+        }
+        if (reference.isEmpty()) {
+            throw new ReferenceNotFoundException();
+        }
+        if (subject.get().getUser().getId() == user.getId()
                 && reference.get().getId() == user.getId()) {
             subject.get().getReferences().remove(reference.get());
             return new ResponseEntity<>(
@@ -93,22 +104,19 @@ public class SubjectService {
                     HttpStatus.ACCEPTED
             );
         }
-        return new ResponseEntity<>(
-                "Invalid subject or reference id",
-                HttpStatus.UNAUTHORIZED
-        );
+        throw new UserIdMismatchException();
     }
 
     public ResponseEntity<?> updateSubject(Subject updatedSubject, long id, Principal principal) {
         User user = userRepository.findUsersByEmail(principal.getName());
-        Subject subject = subjectRepository.getReferenceById(id);
-        if (subject.getUser().getId() == user.getId()) {
-            subject.setTitle(updatedSubject.getTitle());
-            return new ResponseEntity<>(subjectRepository.save(subject), HttpStatus.ACCEPTED);
+        Optional<Subject> subject = subjectRepository.findById(id);
+        if (subject.isEmpty()) {
+            throw new SubjectNotFoundException();
         }
-        return new ResponseEntity<>(
-                "Invalid subject id",
-                HttpStatus.UNAUTHORIZED
-        );
+        if (subject.get().getUser().getId() == user.getId()) {
+            subject.get().setTitle(updatedSubject.getTitle());
+            return new ResponseEntity<>(subjectRepository.save(subject.get()), HttpStatus.ACCEPTED);
+        }
+        throw new UserIdMismatchException();
     }
 }

@@ -1,5 +1,7 @@
 package com.drawingreferenceorganizer.services;
 
+import com.drawingreferenceorganizer.exceptions.ReferenceNotFoundException;
+import com.drawingreferenceorganizer.exceptions.UserIdMismatchException;
 import com.drawingreferenceorganizer.models.User;
 import com.drawingreferenceorganizer.repositories.ReferenceRepository;
 import com.drawingreferenceorganizer.models.Reference;
@@ -29,7 +31,7 @@ public class ReferenceService {
         if (reference.isPresent()) {
             return new ResponseEntity<>(reference.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>("Invalid reference id", HttpStatus.BAD_REQUEST);
+        throw new ReferenceNotFoundException();
     }
 
     public ResponseEntity<Reference> addReference(Reference reference, Principal principal) {
@@ -43,34 +45,34 @@ public class ReferenceService {
 
     public ResponseEntity<?> deleteReference(long id, Principal principal) {
         User user = userRepository.findUsersByEmail(principal.getName());
-        Reference reference = referenceRepository.getReferenceById(id);
-        if (reference.getUser().getId() == user.getId()) {
+        Optional<Reference> reference = referenceRepository.findById(id);
+        if (reference.isEmpty()) {
+            throw new ReferenceNotFoundException();
+        }
+        if (reference.get().getUser().getId() == user.getId()) {
             referenceRepository.deleteById(id);
             return new ResponseEntity<>(
                     "Reference is successfully deleted.",
                     HttpStatus.ACCEPTED
             );
         }
-        return new ResponseEntity<>(
-                "Invalid reference id",
-                HttpStatus.UNAUTHORIZED
-        );
+        throw new UserIdMismatchException();
     }
 
     public ResponseEntity<?> updateReference(Reference updatedReference, long id, Principal principal) {
         User user = userRepository.findUsersByEmail(principal.getName());
-        Reference reference = referenceRepository.getReferenceById(id);
-        if (reference.getUser().getId() == user.getId()) {
-            reference.setDescription(updatedReference.getDescription());
-            reference.setUrl(updatedReference.getUrl());
+        Optional<Reference> reference = referenceRepository.findById(id);
+        if (reference.isEmpty()) {
+            throw new ReferenceNotFoundException();
+        }
+        if (reference.get().getUser().getId() == user.getId()) {
+            reference.get().setDescription(updatedReference.getDescription());
+            reference.get().setUrl(updatedReference.getUrl());
             return new ResponseEntity<>(
-                    referenceRepository.save(reference),
+                    referenceRepository.save(reference.get()),
                     HttpStatus.ACCEPTED
             );
         }
-        return new ResponseEntity<>(
-                "Invalid reference id",
-                HttpStatus.UNAUTHORIZED
-        );
+        throw new UserIdMismatchException();
     }
 }
